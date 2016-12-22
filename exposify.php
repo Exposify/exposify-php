@@ -144,7 +144,7 @@ class HtmlHandler extends ApiBlueprint {
 	{
 		if (isset($this->result['js']) && is_array($this->result['js'])) {
 			foreach ($this->result['js'] as $js_src) {
-				echo '<script src="' . $js_src . '">';
+				echo '<script src="' . $js_src . '"></script>';
 			}
 		}
 	}
