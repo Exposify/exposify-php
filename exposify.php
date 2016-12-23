@@ -11,6 +11,12 @@ abstract class ApiBlueprint {
 	protected $result = [];
 
 	/**
+	 * API JSON error converted to an array.
+	 * @var Array
+	 */
+	protected $error = [];
+
+	/**
 	 * The URL to connect with Exposify API.
 	 * @var string
 	 */
@@ -35,7 +41,14 @@ abstract class ApiBlueprint {
 			CURLOPT_URL            => $url,
 			CURLOPT_TIMEOUT        => 5
 		]);
-		$this->result = json_decode(curl_exec($curl), true);
+		$json = json_decode(curl_exec($curl), true);
+
+		if ($json['error']) {
+			$this->error = $json['error'];
+		} else {
+			$this->result = $json;
+		}
+
 		curl_close($curl);
 	}
 
@@ -92,10 +105,9 @@ class HtmlHandler extends ApiBlueprint {
 	 */
 	public function getContent()
 	{
-		if (empty($this->result)) {
-			http_response_code(404);
-			echo '<h1>404 :(</h1>' .
-			     '<p>Wir können diese Immobilie leider nicht finden.</p>';
+		if (!empty($this->error)) {
+			http_response_code($this->error['status'] ?: 404);
+			echo htmlspecialchars_decode($this->error['html']);
 		} else {
 			echo htmlspecialchars_decode($this->result['html']);
 		}
@@ -129,8 +141,11 @@ class HtmlHandler extends ApiBlueprint {
 	 */
 	public function getMeta()
 	{
-		if (isset($this->result['css']) && is_array($this->result['css'])) {
-			foreach ($this->result['css'] as $css_src) {
+		if (isset($this->error['css']))  { $css = $this->error['css']; }
+		if (isset($this->result['css'])) { $css = $this->result['css']; }
+
+		if (isset($css) && is_array($css)) {
+			foreach ($css as $css_src) {
 				echo '<link rel="stylesheet" href="' . $css_src . '">';
 			}
 		}
@@ -142,8 +157,11 @@ class HtmlHandler extends ApiBlueprint {
 	 */
 	public function getScripts()
 	{
-		if (isset($this->result['js']) && is_array($this->result['js'])) {
-			foreach ($this->result['js'] as $js_src) {
+		if (isset($this->error['js']))  { $js = $this->error['js']; }
+		if (isset($this->result['js'])) { $js = $this->result['js']; }
+
+		if (isset($js) && is_array($js)) {
+			foreach ($js as $js_src) {
 				echo '<script src="' . $js_src . '"></script>';
 			}
 		}
