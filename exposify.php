@@ -164,10 +164,10 @@ class Exposify extends ApiBlueprint {
 	 * Construct the class and instantiate the HtmlHandler.
 	 * @param String $apiKey
 	 */
-	public function __construct($apiKey)
+	public function __construct($apiKey, $apiBaseUrl = 'https://app.exposify.de')
 	{
-		$this->apiUrl = 'https://app.exposify.de/api/beta/';
+		$this->apiUrl = $apiBaseUrl . '/api/beta/';
 		$this->apiKey = $apiKey;
-		$this->html   = new HtmlHandler('https://app.exposify.de/html-api', $apiKey);
+		$this->html   = new HtmlHandler($apiBaseUrl . '/html-api', $apiKey);
 	}
 }
