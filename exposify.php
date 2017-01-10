@@ -82,6 +82,15 @@ abstract class ApiBlueprint {
 	{
 		return $this->result;
 	}
+
+	/**
+	 * Return the error of the finished request.
+	 * @return Array
+	 */
+	public function getError()
+	{
+		return $this->error;
+	}
 }
 
 /**
