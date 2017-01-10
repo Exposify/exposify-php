@@ -43,7 +43,7 @@ abstract class ApiBlueprint {
 		]);
 		$json = json_decode(curl_exec($curl), true);
 
-		if ($json['error']) {
+		if (isset($json['error'])) {
 			$this->error = $json['error'];
 		} else {
 			$this->result = $json;
