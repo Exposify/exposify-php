@@ -221,4 +221,22 @@ class Exposify extends ApiBlueprint {
 		$this->apiKey = $apiKey;
 		$this->html   = new HtmlHandler($apiBaseUrl . '/api/v1/html', $apiKey);
 	}
+
+	/**
+	 * Request all properties.
+	 *
+	 * @param  string  $searchQuery  A search query.
+	 * @param  array  $fields  An array of field ids to append to the properties.
+	 * @return void
+	 */
+	public function requestAllProperties($searchQuery = '', $fields = [])
+	{
+		$url =
+			$this->apiUrl .
+			'?api_token=' . $this->apiKey .
+			'&search=' . $searchQuery .
+			'&fields=' . implode($fields, '+')
+		;
+		$this->requestData($url);
+	}
 }
