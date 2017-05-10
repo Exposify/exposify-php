@@ -6,32 +6,37 @@
 abstract class ApiBlueprint {
 	/**
 	 * API JSON result converted to an array.
-	 * @var Array
+	 *
+	 * @var array
 	 */
 	protected $result = [];
 
 	/**
 	 * API JSON error converted to an array.
-	 * @var Array
+	 *
+	 * @var array
 	 */
 	protected $error = [];
 
 	/**
 	 * The URL to connect with Exposify API.
+	 *
 	 * @var string
 	 */
 	protected $apiUrl = '';
 
 	/**
 	 * The secret key to connect with Exposify API.
+	 *
 	 * @var string
 	 */
 	protected $apiKey = '';
 
 	/**
 	 * Request and store data from a specific URL.
-	 * @param  String $url
-	 * @return Void
+	 *
+	 * @param  string  $url
+	 * @return void
 	 */
 	protected function requestData($url)
 	{
@@ -59,8 +64,9 @@ abstract class ApiBlueprint {
 
 	/**
 	 * Request all properties.
-	 * @param  String $searchQuery
-	 * @return Void
+	 *
+	 * @param  string  $searchQuery
+	 * @return void
 	 */
 	public function requestAllProperties($searchQuery)
 	{
@@ -70,8 +76,9 @@ abstract class ApiBlueprint {
 
 	/**
 	 * Request a single property.
-	 * @param  String $slug
-	 * @return Void
+	 *
+	 * @param  string  $slug
+	 * @return void
 	 */
 	public function requestSingleProperty($slug)
 	{
@@ -81,7 +88,8 @@ abstract class ApiBlueprint {
 
 	/**
 	 * Return the result of the finished request.
-	 * @return Array
+	 *
+	 * @return array
 	 */
 	public function getResult()
 	{
@@ -90,7 +98,8 @@ abstract class ApiBlueprint {
 
 	/**
 	 * Return the error of the finished request.
-	 * @return Array
+	 *
+	 * @return array
 	 */
 	public function getError()
 	{
@@ -104,8 +113,10 @@ abstract class ApiBlueprint {
 class HtmlHandler extends ApiBlueprint {
 	/**
 	 * Construct the class.
-	 * @param String $apiUrl
-	 * @param String $apiKey
+	 *
+	 * @param  string  $apiUrl
+	 * @param  string  $apiKey
+	 * @return void
 	 */
 	public function __construct($apiUrl, $apiKey)
 	{
@@ -115,6 +126,7 @@ class HtmlHandler extends ApiBlueprint {
 
 	/**
 	 * Output the result of the HTML API request.
+	 *
 	 * @return void
 	 */
 	public function getContent()
@@ -129,6 +141,7 @@ class HtmlHandler extends ApiBlueprint {
 
 	/**
 	 * Output the title of the requested property.
+	 *
 	 * @return void
 	 */
 	public function getTitle()
@@ -140,6 +153,7 @@ class HtmlHandler extends ApiBlueprint {
 
 	/**
 	 * Output the description of the requested property.
+	 *
 	 * @return void
 	 */
 	public function getDescription()
@@ -151,6 +165,7 @@ class HtmlHandler extends ApiBlueprint {
 
 	/**
 	 * Output all head tags needed for the requested ressources.
+	 *
 	 * @return void
 	 */
 	public function getMeta()
@@ -167,6 +182,7 @@ class HtmlHandler extends ApiBlueprint {
 
 	/**
 	 * Output all footer tags needed for the requested ressources.
+	 *
 	 * @return void
 	 */
 	public function getScripts()
@@ -187,14 +203,17 @@ class HtmlHandler extends ApiBlueprint {
  */
 class Exposify extends ApiBlueprint {
 	/**
-	 * The HtmlHandler Instance
+	 * The HtmlHandler Instance.
+	 *
 	 * @var HtmlHandler
 	 */
 	public $html = null;
 
 	/**
 	 * Construct the class and instantiate the HtmlHandler.
-	 * @param String $apiKey
+	 *
+	 * @param  string  $apiKey
+	 * @return void
 	 */
 	public function __construct($apiKey, $apiBaseUrl = 'https://app.exposify.de')
 	{
