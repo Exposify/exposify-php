@@ -45,8 +45,13 @@ abstract class ApiBlueprint {
 
 		if (isset($json['error'])) {
 			$this->error = $json['error'];
+		} else if (isset($json['data'])) {
+			$this->result = $json['data'];
 		} else {
-			$this->result = $json;
+			$this->error = [
+				'title' => 'Server Error',
+				'description' => 'The server did not return valid data.'
+			];
 		}
 
 		curl_close($curl);
@@ -59,7 +64,7 @@ abstract class ApiBlueprint {
 	 */
 	public function requestAllProperties($searchQuery)
 	{
-		$url = $this->apiUrl . '?api_token=' . $this->apiKey . '&query=' . $searchQuery;
+		$url = $this->apiUrl . '?api_token=' . $this->apiKey . '&search=' . $searchQuery;
 		$this->requestData($url);
 	}
 
@@ -193,8 +198,8 @@ class Exposify extends ApiBlueprint {
 	 */
 	public function __construct($apiKey, $apiBaseUrl = 'https://app.exposify.de')
 	{
-		$this->apiUrl = $apiBaseUrl . '/api/beta/';
+		$this->apiUrl = $apiBaseUrl . '/api/v1/json';
 		$this->apiKey = $apiKey;
-		$this->html   = new HtmlHandler($apiBaseUrl . '/html-api', $apiKey);
+		$this->html   = new HtmlHandler($apiBaseUrl . '/api/v1/html', $apiKey);
 	}
 }
