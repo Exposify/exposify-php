@@ -83,7 +83,22 @@ abstract class ApiBlueprint {
 	public function requestSingleProperty($slug)
 	{
 		$url = $this->apiUrl . '/' . $slug . '?api_token=' . $this->apiKey;
+		$url = $url . '&origin=' . urlencode($this->getRequestOriginUrl($slug));
+
 		$this->requestData($url);
+	}
+
+	/**
+	 * We retrieve the origin of the request by splitting the REQUEST_URI at the
+	 * slug and using the first part to build an origin URL.
+	 *
+	 * @param  string  $slug
+	 * @return string
+	 */
+	protected function getRequestOriginUrl($slug)
+	{
+		$propertyPath = explode($slug, $_SERVER['REQUEST_URI'])[0];
+		return (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $propertyPath;
 	}
 
 	/**
